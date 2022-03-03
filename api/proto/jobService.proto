@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package apis;
+
+// JobStart contains the linux job that has to be executed.
+message JobStart {
+  // cmd is the linux job passed in by the user.
+  string cmd = 1;
+  // args is the argument for cmd.
+  repeated string args = 2;
+  // jobPriority is an optional settings to limit the resource the job can
+  // utilize.
+  jobPriority level = 3;
+}
+
+// JobId is the response for a sucessful JobStart.
+message JobId {
+  // id is the uuid for job that was sucessfully triggered.
+  string id = 1;
+}
+
+// jobPriority is used to control the resouces that will be allocated for the
+// job.
+enum jobPriority {
+  // LOW denotes throttled CPU, Memory and I/O.
+  LOW = 0;
+  // STANDARD denotes default CPU, Memory and I/O permissions.
+  STANDARD = 1;
+  // STANDARD denotes default CPU, Memory and I/O permissions.
+  HIGH = 2;
+}
+
+// JobStop is used to terminate a job.
+message JobStop {
+  JobId id = 1;
+  JobTerminateOption Option = 2;
+}
+
+// JobTerminateOption specfies how the job should be terminated.
+enum JobTerminateOption {
+  GRACEFUL = 0;
+  IMMEDIATE = 1;
+}
+
+// JobStatus
+message JobStatus {
+  JobId id = 1;
+  JobState status = 2;
+}
+
+// JobState contains the current status of job.
+enum JobState {
+  INPROGRESS = 0;
+  COMPLETED = 1;
+  IDLE = 2;
+  STOPPED = 3;
+  ZOMBIE = 4;
+  NOTFOUND = 5;
+}
+
+// JobStream
+message JobStream {
+  JobId id = 1;
+  // blockNumber is an optional sequence number of the chunked output.
+  int64 blockNumber = 2;
+  // output is the job generated output.
+  bytes output = 3;
+}

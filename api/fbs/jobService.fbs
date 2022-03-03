@@ -1,0 +1,50 @@
+// Generated from jobService.proto
+
+namespace apis;
+
+enum jobPriority : int {
+  LOW = 0,
+  STANDARD = 1,
+  HIGH = 2,
+}
+
+enum JobTerminateOption : int {
+  GRACEFUL = 0,
+  IMMEDIATE = 1,
+}
+
+enum JobState : int {
+  INPROGRESS = 0,
+  COMPLETED = 1,
+  IDLE = 2,
+  STOPPED = 3,
+  ZOMBIE = 4,
+  NOTFOUND = 5,
+}
+
+table JobStart {
+  cmd:string;
+  args:[string];
+  level:apis.jobPriority;
+}
+
+table JobId {
+  id:string;
+}
+
+table JobStop {
+  id:apis.JobId;
+  Option:apis.JobTerminateOption;
+}
+
+table JobStatus {
+  id:apis.JobId;
+  status:apis.JobState;
+}
+
+table JobStream {
+  id:apis.JobId;
+  blockNumber:long;
+  output:[ubyte];
+}
+
