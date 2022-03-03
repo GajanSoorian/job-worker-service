@@ -14,7 +14,7 @@
 	- [Out of Scope](#out-of-scope)
 	- [Additional information](#additional-information)
 		- [Security](#security)
-		- [Protobuf Schema](#protobuf-schema)
+		- [gRPC](#grpc)
 
 
 ## Requirments
@@ -92,15 +92,17 @@ Request Authorization : Pre defined API keys can be used. (May revisit this in t
 
 Action Authorization: Application logic that links job id with user id can be used to check priviledge for 
 
-### Protobuf Schema
+### gRPC
 
-Serialization library - Flatbuffers.
+Service APIs will be gRPC endpoints.
+
+Serialization/De-serialization library to be used with gRPC consideration - Flatbuffers vs google Protobuf:
 
 I ran a small PoC to benchmark serializing and deserializing performance of Google Protobuf and Flatbuffers for a simple message(string and int) of size 8 kb. The flatbuffer lib performance was promising:
 	Pros: Flatbuffers have an almost negligible de-serialization time compared to protobuf
 	Cons: The serialized payload size was 9% larger than the payload serialized by protobuf
 	Nice bonus: Flatbuffers schema compiler can generate .fbs schema from a proto file. 
 
-Payload size, Flexibility, learning curve for Flatbuffers will be evaluated and a switch will be made to protobuf if the trade off is not worth it.
+Payload size, flexibility, learning curve for Flatbuffers will be evaluated and a switch will be made to protobuf if the trade off is not worth it.
 
-Protobuf schema is define [here](api/proto/jobService.proto). Flatbuffer schema is defined [here]().
+Protobuf schema is define [here](../api/proto/jobService.proto). Flatbuffer schema is defined [here](../api/fbs/jobService.fbs).
